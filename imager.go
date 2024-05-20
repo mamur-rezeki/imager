@@ -71,6 +71,24 @@ func (i *Imager) Bytes() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
+func (i *Imager) LoadByte(data []byte) error {
+	var err error
+	i.Image, i.ImageType, err = image.Decode(bytes.NewReader(data))
+
+	return err
+}
+
+func (i *Imager) LoadFile(location string) error {
+	fp, err := os.Open(location)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	i.Image, i.ImageType, err = image.Decode(fp)
+	return err
+}
+
 func (i *Imager) Save(location string) error {
 	return imaging.Save(i.Image, location)
 }
