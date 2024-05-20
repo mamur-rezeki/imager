@@ -80,3 +80,8 @@ func (i *Imager) Crop(width, height int, x, y int) *Imager {
 	i.Image = imaging.Crop(i.Image, image.Rect(x, y, x+width, y+height))
 	return i
 }
+
+func (i *Imager) Rotate(degrees int) *Imager {
+	i.Image = imaging.Rotate(i.Image, float64(degrees), &image.Uniform{})
+	return i
+}
