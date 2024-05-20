@@ -75,3 +75,8 @@ func (i *Imager) Resize(width, height int) *Imager {
 	i.Image = imaging.Resize(i.Image, width, height, imaging.Lanczos)
 	return i
 }
+
+func (i *Imager) Crop(width, height int, x, y int) *Imager {
+	i.Image = imaging.Crop(i.Image, image.Rect(x, y, x+width, y+height))
+	return i
+}
