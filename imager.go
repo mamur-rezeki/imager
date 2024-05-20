@@ -75,8 +75,35 @@ func (i *Imager) Save(location string) error {
 	return imaging.Save(i.Image, location)
 }
 
-func (i *Imager) Resize(width, height int) *Imager {
-	i.Image = imaging.Resize(i.Image, width, height, imaging.Lanczos)
+type ResizeMode int
+
+const (
+	MD_FIT ResizeMode = iota
+	MD_CROP
+	MD_SCALE
+	MD_STRETCH
+)
+
+func (i *Imager) Resize(width, height int, modes ...ResizeMode) *Imager {
+	mode := MD_FIT
+	for _, md := range modes {
+		mode = md
+	}
+	switch mode {
+	case MD_SCALE:
+		// Resize keeping the aspect ratio
+		i.Image = imaging.Resize(i.Image, width, height, imaging.Lanczos)
+	case MD_CROP:
+		// Crop the image to the center
+		i.Image = imaging.CropCenter(i.Image, width, height)
+	case MD_FIT:
+		// Fit the image within the specified dimensions, maintaining the aspect ratio
+		i.Image = imaging.Fit(i.Image, width, height, imaging.Lanczos)
+	case MD_STRETCH:
+		// Resize to exact dimensions without keeping the aspect ratio
+		i.Image = imaging.Resize(i.Image, width, height, imaging.NearestNeighbor)
+	}
+
 	return i
 }
 
