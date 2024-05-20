@@ -71,6 +71,10 @@ func (i *Imager) Bytes() ([]byte, error) {
 	return buf.Bytes(), err
 }
 
+func (i *Imager) Save(location string) error {
+	return imaging.Save(i.Image, location)
+}
+
 func (i *Imager) Resize(width, height int) *Imager {
 	i.Image = imaging.Resize(i.Image, width, height, imaging.Lanczos)
 	return i
