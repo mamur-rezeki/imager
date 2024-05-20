@@ -1,4 +1,4 @@
-module imager
+module github.com/mamur-rezeki/imager
 
 go 1.22.2
 
